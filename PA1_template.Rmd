@@ -7,11 +7,32 @@ output:
 
 
 ## Loading and preprocessing the data
-
-
+```{r Load, echo=TRUE, cache=FALSE}
+if(!file.exists("activity.csv")) {
+    file.url<-"http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+    download.file(file.url,"activity.zip",mode="wb",method="auto")
+    unzip("activity.zip")
+}
+activity<-read.csv("activity.csv",header=TRUE,stringsAsFactors=FALSE)
+activity$date<-as.Date(activity$date)
+```
 
 ## What is mean total number of steps taken per day?
+```{r Hist, echo=TRUE}
+steps.by.date<-tapply(activity$steps,activity$date,sum, na.rm=TRUE)
+hist(steps.by.date,breaks=10,main="Historgram of steps per day",xlab="Steps per day",axes=F)
+axis(2)
+axis(1,at=seq(0,22000, by=2000))
+```
+Mean of Total steps per day
+```{r Mean, echo=TRUE}
+mean(steps.by.date,na.rm=TRUE)
+```
 
+Median of Total steps per day
+```{r Median, echo=TRUE}
+median(steps.by.date,na.rm=TRUE)
+```
 
 
 ## What is the average daily activity pattern?
