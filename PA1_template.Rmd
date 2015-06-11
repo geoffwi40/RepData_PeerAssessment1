@@ -55,17 +55,17 @@ The number of missing values is:
 sum(is.na(activity$steps))
 ```
 
+Create new array with the NA's replaced with mean of the same interval computed earlier
 ```{r, echo=TRUE}
-#Create new array with NA's repalced with mean by matching interval
+
 activity2<-activity
 steps2.by.interval<-round(tapply(activity2$steps,activity2$interval,mean))
 activity2$steps<-mapply(function(steps,interval) ifelse(is.na(steps),steps.by.interval[as.character(interval)],steps),steps=activity2$steps,interval=activity2$interval)
 steps2.by.date<-tapply(activity2$steps,activity2$date,sum)
 ```
 
-
+Create comparitive histogram
 ```{r, echo=TRUE, fig.width=10, fig.height=7}
-#Create comparitive histogram
 hist(steps2.by.date,breaks=10,main="Historgram of steps per day (with NA's substituted)",xlab="Steps per day",axes=F)
 axis(2)
 axis(1,at=seq(0,22000, by=2000))
@@ -98,6 +98,6 @@ steps3.by.interval<-melt(steps3.by.interval,id="interval",value.name="steps",var
 
 #create panel plot
 library(lattice)
-xyplot(steps ~ interval|Weekday,data=steps3.by.interval,type="l", layout=c(1,2))
+xyplot(steps ~ interval|Weekday,data=steps3.by.interval,type="l", layout=c(1,2), main="Plot of comparision of Weekend to Weekday steps per interval")
 ```
 

@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
@@ -27,7 +22,7 @@ axis(2)
 axis(1,at=seq(0,22000, by=2000))
 ```
 
-![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-1-1.png) 
 
 Mean of Total steps per day
 
@@ -60,7 +55,7 @@ axis(2)
 axis(1, at=seq(0,2400, by=200))
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
 
 The interval with the maximum number of steps (averaged per day) is
 
@@ -82,25 +77,24 @@ sum(is.na(activity$steps))
 ## [1] 2304
 ```
 
+Create new array with the NA's replaced with mean of the same interval computed earlier
 
 ```r
-#Create new array with NA's repalced with mean by matching interval
 activity2<-activity
 steps2.by.interval<-round(tapply(activity2$steps,activity2$interval,mean))
 activity2$steps<-mapply(function(steps,interval) ifelse(is.na(steps),steps.by.interval[as.character(interval)],steps),steps=activity2$steps,interval=activity2$interval)
 steps2.by.date<-tapply(activity2$steps,activity2$date,sum)
 ```
 
-
+Create comparitive histogram
 
 ```r
-#Create comparitive histogram
 hist(steps2.by.date,breaks=10,main="Historgram of steps per day (with NA's substituted)",xlab="Steps per day",axes=F)
 axis(2)
 axis(1,at=seq(0,22000, by=2000))
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
 
 Mean of Total steps per day
 
@@ -140,8 +134,8 @@ steps3.by.interval<-melt(steps3.by.interval,id="interval",value.name="steps",var
 
 #create panel plot
 library(lattice)
-xyplot(steps ~ interval|Weekday,data=steps3.by.interval,type="l", layout=c(1,2))
+xyplot(steps ~ interval|Weekday,data=steps3.by.interval,type="l", layout=c(1,2), main="Plot of comparision of Weekend to Weekday steps per interval")
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
 
