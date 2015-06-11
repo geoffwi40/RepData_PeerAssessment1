@@ -18,29 +18,86 @@ activity$date<-as.Date(activity$date)
 ```
 
 ## What is mean total number of steps taken per day?
-```{r Hist, echo=TRUE}
+```{r, echo=TRUE, fig.width=10, fig.height=7}
 steps.by.date<-tapply(activity$steps,activity$date,sum, na.rm=TRUE)
 hist(steps.by.date,breaks=10,main="Historgram of steps per day",xlab="Steps per day",axes=F)
 axis(2)
 axis(1,at=seq(0,22000, by=2000))
 ```
+
 Mean of Total steps per day
-```{r Mean, echo=TRUE}
+```{r, echo=TRUE}
 mean(steps.by.date,na.rm=TRUE)
 ```
 
 Median of Total steps per day
-```{r Median, echo=TRUE}
+```{r, echo=TRUE}
 median(steps.by.date,na.rm=TRUE)
 ```
 
 
 ## What is the average daily activity pattern?
+```{r, echo=TRUE, fig.width=10,fig.height=7}
+steps.by.interval<-round(tapply(activity$steps,activity$interval,mean, na.rm=TRUE))
+interval<-as.numeric(row.names(steps.by.interval))
+plot(steps.by.interval ~ interval, type="l", main="Average of steps (across days) for each interval",ylab="Steps", axes=FALSE)
+axis(2)
+axis(1, at=seq(0,2400, by=200))
+```
 
-
-
+The interval with the maximum number of steps (averaged per day) is
+```{r}
+interval[which.max(steps.by.interval)]
+```
 ## Imputing missing values
+The number of missing values is:
+```{r, echo=TRUE}
+sum(is.na(activity$steps))
+```
+
+```{r, echo=TRUE}
+#Create new array with NA's repalced with mean by matching interval
+activity2<-activity
+steps2.by.interval<-round(tapply(activity2$steps,activity2$interval,mean))
+activity2$steps<-mapply(function(steps,interval) ifelse(is.na(steps),steps.by.interval[as.character(interval)],steps),steps=activity2$steps,interval=activity2$interval)
+steps2.by.date<-tapply(activity2$steps,activity2$date,sum)
+```
+
+
+```{r, echo=TRUE, fig.width=10, fig.height=7}
+#Create comparitive histogram
+hist(steps2.by.date,breaks=10,main="Historgram of steps per day (with NA's substituted)",xlab="Steps per day",axes=F)
+axis(2)
+axis(1,at=seq(0,22000, by=2000))
+```
+
+Mean of Total steps per day
+```{r, echo=TRUE}
+mean(steps2.by.date,na.rm=TRUE)
+```
+
+Median of Total steps per day
+```{r, echo=TRUE}
+median(steps2.by.date,na.rm=TRUE)
+```
+It can be inferred that the mean and median values have moved slightly higher due to the NA's effectively counting as 0's previously and weighting the overall distribution lower. This can also be seen by the much lower 0-1000 steps per day which was artifically increased by NA's counting as 0's
+
 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+```{r,echo=TRUE, fig.height=7, fig.width=10}
+#create factor variable
+activity2$Weekday<-as.factor(mapply(function(date) ifelse(weekdays(date)=="Sunday"||weekdays(date)=="Saturday","weekend","weekday"),date=activity2$date))
+
+# create new data frame for easier plotting
+library(reshape2)
+steps3.by.interval<-as.data.frame(round(tapply(activity2$steps,list(activity2$interval,activity2$Weekday),mean)))
+steps3.by.interval$interval<-as.numeric(row.names(steps3.by.interval))
+steps3.by.interval<-melt(steps3.by.interval,id="interval",value.name="steps",variable.name="Weekday")
+
+#create panel plot
+library(lattice)
+xyplot(steps ~ interval|Weekday,data=steps3.by.interval,type="l", layout=c(1,2))
+```
+
