@@ -1,4 +1,9 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
 
 
 ## Loading and preprocessing the data
@@ -22,7 +27,7 @@ axis(2)
 axis(1,at=seq(0,22000, by=2000))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-1-1.png) 
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png) 
 
 Mean of Total steps per day
 
@@ -55,7 +60,7 @@ axis(2)
 axis(1, at=seq(0,2400, by=200))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
 The interval with the maximum number of steps (averaged per day) is
 
@@ -94,7 +99,7 @@ axis(2)
 axis(1,at=seq(0,22000, by=2000))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
 
 Mean of Total steps per day
 
@@ -137,7 +142,7 @@ library(lattice)
 xyplot(steps ~ interval|Weekday,data=steps3.by.interval,type="l", layout=c(1,2), main="Plot of comparision of Weekend to Weekday steps per interval")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
 
 This tends to indicate people are very active in the mornings during weekdays and then again at regaular intervals but tend to be quite low on average. This maybe due to normal activities such as getting ready for work, then moving around at lunchtime, etc. Weekends on the other hand tend to be to show a reasonable level of activity throughtout the day which might be expected due to people having a broad range of types of activities on weekends which would create a farily even average
 
