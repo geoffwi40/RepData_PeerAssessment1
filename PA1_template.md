@@ -143,4 +143,5 @@ xyplot(steps ~ interval|Weekday,data=steps3.by.interval,type="l", layout=c(1,2),
 ```
 
 ![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
+This tends to indicate people are very active in the mornings during weekdays and then again at regaular intervals but tend to be quite low on average. This maybe due to normal activities such as getting ready for work, then moving around at lunchtime, etc. Weekends on the other hand tend to be to show a reasonable level of activity throughtout the day which might be expected due to people having a broad range of types of activities on weekends which would create a farily even average
 
